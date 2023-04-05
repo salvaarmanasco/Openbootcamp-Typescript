@@ -1,0 +1,26 @@
+{
+  "name": "curso-typescript-openbootcamp",
+  "version": "1.0.0",
+  "description": "Curso Typescript OpenBootcamp",
+  "main": "index.js",
+  "scripts": {
+    "tsNode": "cd src && ts-node index.ts",
+    "start": "nodemon",
+    "transpilation": "tsc",
+    "build:prod": "rimraf ./build && tsc",
+    "start:prod": "npm run build:prod && node build/index.js"
+  },
+  "keywords": [
+    "typescript",
+    "ts"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.15.10",
+    "nodemon": "^2.0.22",
+    "rimraf": "^4.4.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  }
+}
