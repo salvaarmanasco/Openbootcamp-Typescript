@@ -265,3 +265,147 @@ function variosTipos(a: string | number) {
 variosTipos("Hola");
 variosTipos(3);
 // variosTipos(true); ERROR
+
+/**
+ *
+ * @param nombre nombre de la persona
+ * @param apellido apellido de la persona
+ * @returns nombre completo
+ */
+function ejemploReturn(nombre: string, apellido: string): string | number {
+  return `${nombre} ${apellido}`;
+  // return 3;
+}
+
+const nombreCompleto = ejemploReturn("Salvador", "Armanasco");
+console.log(nombreCompleto); // Salvador Armanasco
+console.log(ejemploReturn("Salvador", "Armanasco")); // Salvador ARmanasco
+
+/**
+ *
+ * @param nombres lista de nombres de texto
+ */
+function ejemploMultiParams(...nombres: string[]) {
+  nombres.forEach((nombre) => {
+    console.log(nombre);
+  });
+}
+
+ejemploMultiParams("Salvador", "Pablo", "Daniel", "Joaquin");
+
+const lista = ["Hola", "Chau"];
+ejemploMultiParams(...lista);
+
+function ejemploParamsLista(nombres: string[]) {
+  nombres.forEach((nombre) => {
+    console.log(nombre);
+  });
+}
+ejemploParamsLista(lista);
+
+type Empleado = {
+  nombre: string;
+  apellido: string;
+  edad: number;
+};
+
+let empleadoLeo: Empleado = {
+  nombre: "Leo",
+  apellido: "Messi",
+  edad: 34,
+};
+
+// Arrow functions
+
+const mostrarEmpleado = (empleado: Empleado) =>
+  `${empleado.nombre} tiene ${empleado.edad} años`;
+
+const datosEmpleado = (empleado: Empleado): string => {
+  if (empleado.edad > 70) {
+    return `${empleado.nombre} esta en edad de jubilar`;
+  } else {
+    return `${empleado.nombre} esta NO en edad de jubilar`;
+  }
+};
+
+mostrarEmpleado(empleadoLeo); // Leo tiene 34 años
+datosEmpleado(empleadoLeo); // Leo no esta en edad de jubilar
+
+const obtenerSalario = (empleado: Empleado, cobrar: Function) => {
+  if (empleado.edad > 70) {
+    return;
+  } else {
+    cobrar(); // callback a ejecutar
+  }
+};
+
+const cobrarSalario = () => {
+  console.log("Cobrar nomina");
+};
+
+obtenerSalario(empleadoLeo, cobrarSalario);
+
+// Async functions
+
+async function ejemploAsync(): Promise<string> {
+  await console.log("Tarea a completar antes de continuar");
+  console.log("Tarea completada");
+  return "Completado";
+}
+
+ejemploAsync()
+  .then((respuesta) => {
+    console.log("Respuesta", respuesta);
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+  .finally(() => "Todo ha termiando");
+
+// Generators
+
+function* ejemploGenerator() {
+  // yield -> para emitir valores
+  let index = 0;
+  while (index < 5) {
+    //emitimos un valor incrementado
+    yield index++;
+  }
+}
+
+// Guardamos la funcion generadora en una variable
+
+let generadora = ejemploGenerator();
+
+// Accedemos a los valores emitidos
+
+console.log(generadora.next().value); // 0
+console.log(generadora.next().value); // 1
+console.log(generadora.next().value); // 2
+console.log(generadora.next().value); // 3...
+
+// Worker
+
+function* watcher(valor: number) {
+  yield valor; // Emitimos el valor inicial
+
+  yield* worker(valor); // Llamamos a las emisiones del worker
+
+  yield valor + 4; // Emitimos valor final + 4
+}
+
+function* worker(valor: number) {
+  yield valor + 1;
+  yield valor + 2;
+  yield valor + 3;
+}
+
+let generatorSaga = watcher(0);
+
+console.log(generatorSaga.next().value); // 0 (lo ha hecho el watcher)
+console.log(generatorSaga.next().value); // 1 (lo ha hecho el worker)
+console.log(generatorSaga.next().value); // 2 (lo ha hecho el worker)
+console.log(generatorSaga.next().value); // 3 (lo ha hecho el worker)
+console.log(generatorSaga.next().value); // 4 (lo ha hecho el watcher)
+
+//--------------------------------------------Clase 4-----------------------------------------------------------
