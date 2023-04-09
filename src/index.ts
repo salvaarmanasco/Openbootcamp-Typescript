@@ -1,3 +1,10 @@
+import {
+  deleteAllCookies,
+  deleteCookie,
+  getCookieValue,
+  setCookie,
+} from "cookies-utils";
+
 //-------------------------------------------Clase 1-----------------------------------------------------------
 console.log("hola mundo ts");
 console.log("hola mundo ts2");
@@ -408,4 +415,83 @@ console.log(generatorSaga.next().value); // 2 (lo ha hecho el worker)
 console.log(generatorSaga.next().value); // 3 (lo ha hecho el worker)
 console.log(generatorSaga.next().value); // 4 (lo ha hecho el watcher)
 
+// Sobrecarga de funciones
+
+function mostrarError(error: string | number): void {
+  console.log(`Ha habido un error: ${error}`);
+}
+
 //--------------------------------------------Clase 4-----------------------------------------------------------
+
+// Persistencia de datos
+// 1. LocalStorage -> Almacena los datos en el navegador (no se eliminan automaticamente)
+// 2. SessionStorage -> Los datos persisten en la sesion del navegador
+// 3. Cookies -> Tienen una fecha de caducidad y un ambito de URL
+
+// LocalStorage y SessionStorage
+
+// function saveLocalStorage(): void {
+//   localStorage.set("nombre", "Martin");
+// }
+
+// function leer(): void {
+//   let nombre = localStorage.get("nombre");
+// }
+
+// Cookies
+
+const cookieOptions = {
+  name: "usuario",
+  value: "Salvador",
+  maxAge: 10 * 60,
+  expires: new Date(2099, 10, 1),
+  path: "/",
+};
+
+setCookie(cookieOptions);
+
+// Leer una cookie
+let cookieLeida = getCookieValue("usuario");
+
+// Eliminar
+deleteCookie("usuario");
+
+// Eliminar todas las cookies
+
+deleteAllCookies();
+
+// Clase Temporizador
+
+class Temporizador {
+  public terminar?: (tiempo: number) => void;
+
+  public empezar(): void {
+    setTimeout(() => {
+      // Corroboro que la funcion terminar este disponible
+      if (!this.terminar) return;
+
+      // Cuando haya pasado el tiempo se ejecute la funcion terminar
+      this.terminar(Date.now());
+    }, 10000);
+  }
+}
+
+const miTemporizador: Temporizador = new Temporizador();
+
+// Definimos la funcion del callback a ejecutar
+
+miTemporizador.terminar = (tiempo: number) => {
+  console.log(`Hemos terminado la tarea en: ${tiempo}`);
+};
+
+// Lanzamos el temporizador
+miTemporizador.empezar(); // Iniciara el timeOut y se ejecuta la funcion terminar()
+
+// setInterval(() => console.log("Tic"), 1000); // Imprimir "tic" cada segundo por consola
+
+// Eliminar la ejecucion de la funcion
+delete miTemporizador.terminar;
+
+document.getElementById("boton-login").addEventListener("click", () => {
+  console.log(`Has hecho click en login`);
+});
