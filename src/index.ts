@@ -4,6 +4,9 @@ import {
   getCookieValue,
   setCookie,
 } from "cookies-utils";
+import { Curso } from "./models/curso";
+import { Estudiante } from "./models/estudiante";
+import { LISTA_CURSOS } from "./mock/cursos.mock";
 
 //-------------------------------------------Clase 1-----------------------------------------------------------
 console.log("hola mundo ts");
@@ -495,3 +498,40 @@ delete miTemporizador.terminar;
 // document.getElementById("boton-login").addEventListener("click", () => {
 //   console.log(`Has hecho click en login`);
 // });
+//--------------------------------------------Clase 5-----------------------------------------------------------
+
+// Creamos un curso
+
+// const cursoTS: Curso = new Curso("Typescript", 10);
+// const cursoJS: Curso = new Curso("Javascript", 20);
+
+// const listaCursos: Curso[] = [];
+
+// listaCursos.push(cursoTS, cursoJS); // [Lista de cursos]
+
+// Usamos el mock
+
+const listaCursos: Curso[] = LISTA_CURSOS;
+
+// Creamos un estudiante
+
+const salva: Estudiante = new Estudiante("Salva", listaCursos, "Armanasco");
+
+console.log(`${salva.nombre} estudia: `);
+// Iteramos por cada uno de los cursos
+salva.cursos.forEach((c) => {
+  console.log(`-${c.nombre} ${c.horas} horas`); // Typescript 10 horas
+});
+
+const Angular: Curso = new Curso("Angular", 40);
+
+salva.cursos.push(Angular); // Añadimos un curso
+
+// Conocer horas estudiadas
+salva.horasEstudiadas; // number
+salva.ID_Estudiante; // Recibo el ID que originalmente es privado
+salva.ID_Estudiante = "456789";
+
+// Saber la instancia de un objeto/variable
+// Typeof
+// Instanceof
