@@ -7,6 +7,10 @@ import {
 import { Curso } from "./models/curso";
 import { Estudiante } from "./models/estudiante";
 import { LISTA_CURSOS } from "./mock/cursos.mock";
+import { Empleados, Jefe } from "./models/persona";
+import { ITarea, Niveles } from "./models/interfaces/ITarea";
+import { Programar } from "./models/programar";
+import { config } from "process";
 
 //-------------------------------------------Clase 1-----------------------------------------------------------
 console.log("hola mundo ts");
@@ -433,13 +437,13 @@ function mostrarError(error: string | number): void {
 
 // LocalStorage y SessionStorage
 
-// function saveLocalStorage(): void {
-//   localStorage.set("nombre", "Martin");
-// }
+function saveLocalStorage(): void {
+  localStorage.set("nombre", "Martin");
+}
 
-// function leer(): void {
-//   let nombre = localStorage.get("nombre");
-// }
+function leer(): void {
+  let nombre = localStorage.get("nombre");
+}
 
 // Cookies
 
@@ -535,3 +539,112 @@ salva.ID_Estudiante = "456789";
 // Saber la instancia de un objeto/variable
 // Typeof
 // Instanceof
+
+let fechaNacimiento = new Date(1998, 5, 4);
+if (fechaNacimiento instanceof Date) {
+  console.log("Es una fecha");
+}
+
+if (salva instanceof Estudiante) {
+  console.log("Es un estudiante");
+}
+//--------------------------------------------Clase 6-----------------------------------------------------------
+
+// Herencia y polimorfismo
+
+let empleado1 = new Empleados("Salva", "Armanasco", 24, 100);
+let empleado2 = new Empleados("Pepe", "Pop", 30, 200);
+let empleado3 = new Empleados("Tito", "Tan", 18, 50);
+
+let jefe = new Jefe("Salva", "Armanasco", 30);
+
+empleado1.saludar(); // Especificado en Empleados
+jefe.saludar(); //  Herencia de Persona
+
+// jefe.empleado.push(empleado1, empleado2, empleado3);
+
+// jefe.empleado.forEach((empleado: Empleado) => {
+//   console.log(empleado.nombre);
+// });
+
+// Uso de interfaces
+
+let programar: ITarea = {
+  titulo: "Programar Typescript",
+  descripcion: "Aprender a desarrollar con TS",
+  completada: false,
+  urgencia: Niveles.Urgente,
+  resumen: function (): string {
+    return `${this.titulo} - ${this.completada} - Nivel: ${this.urgencia}`;
+  },
+};
+
+console.log(programar.resumen());
+
+// Tarea de Programar (implementa ITarea)
+
+let programatTS = new Programar(
+  "TS",
+  "Programar en Typescript es facil",
+  false,
+  Niveles.Informativa
+);
+
+console.log(programatTS.resumen());
+
+//Decoradores experimentales --> @
+// - Clases
+// - Parametros
+// - Metodos
+// - Propiedades
+
+function Override(label: string) {
+  return function (target: any, key: string) {
+    Object.defineProperty(target, key, {
+      configurable: false,
+      get: () => label,
+    });
+  };
+}
+
+class PruebaDecorador {
+  @Override("prueba") // llamar a la funcion Override
+  nombre: string = "Salva";
+}
+
+let prueba = new PruebaDecorador();
+
+console.log(prueba.nombre); // Obtendria "prueba"
+
+function SoloLectura(target: any, key: string) {
+  Object.defineProperty(target, key, {
+    writable: false,
+  });
+}
+
+class PruebaSoloLectura {
+  @SoloLectura
+  nombre: string = "";
+}
+
+let pruebaLectura = new PruebaSoloLectura();
+pruebaLectura.nombre = "Salva";
+console.log(pruebaLectura.nombre); // Devolvera Undefined
+
+// Decorador para parametros de un metodo
+
+function mostrarPosicion(
+  target: any,
+  propertyKey: string,
+  parameterIndex: number
+) {
+  console.log("posicion", parameterIndex);
+}
+
+class PruebaMetodoDecorador {
+  prueba(a: string, @mostrarPosicion b: boolean) {
+    console.log(b);
+  }
+}
+// Usamos el metodo con el parametro y su decorador
+new PruebaMetodoDecorador().prueba("hola", false);
