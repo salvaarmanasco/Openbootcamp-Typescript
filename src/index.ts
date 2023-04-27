@@ -648,3 +648,18 @@ class PruebaMetodoDecorador {
 }
 // Usamos el metodo con el parametro y su decorador
 new PruebaMetodoDecorador().prueba("hola", false);
+
+//--------------------------------------------Clase 7-----------------------------------------------------------
+
+// Patrones creacionales
+
+const miPrimerSingleton = Singleton.getInstance();
+const miSegundoSingleton = Singleton.getInstance();
+
+if (miPrimerSingleton === miSegundoSingleton) {
+  console.log("Singleton works, both variables contain the same instance.");
+  miPrimerSingleton.mostrarPorConsola();
+  miSegundoSingleton.mostrarPorConsola();
+} else {
+  console.log("Singleton failed, variables contain different instances.");
+}
